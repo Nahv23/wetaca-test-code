@@ -6,7 +6,6 @@ import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
-
 import './css/Menu.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
@@ -16,6 +15,7 @@ import 'mdbreact/dist/css/mdb.css';
 const Menu = ({ addDish }) => {
 
   const [dataDishes, setDataDishes] = useState(null);
+  let [quantity, setQuantity] = useState(1);
 
   const query = `query dishes {
     dishes {
@@ -44,9 +44,22 @@ const Menu = ({ addDish }) => {
     return result;
   }
 
+  const decrease = () => {
+    setQuantity(quantity - 1);
+  }
+
+  const increase = () => {
+    setQuantity(quantity + 1);
+  }
+
   const addDishToCart = (dishSelected) => {
-    console.log("PLATO->", dishSelected)
-    addDish(dishSelected)
+    let dishInfo = {
+      name: dishSelected.name,
+      price: dishSelected.price,
+      quantity: quantity
+    }
+    addDish(dishInfo);
+    setQuantity(1);
   }
 
   if (dataDishes === null) {
@@ -67,10 +80,15 @@ const Menu = ({ addDish }) => {
                 <Card.Img variant="top" src={dish.image} alt={dish.name} className='img-fluid' />
                 <Card.Body>
                   <Card.Title>{dish.name}</Card.Title>
+                  <h4 className='mt-2'>{`${transformPrice(dish.price)}`}</h4>
                 </Card.Body>
                 <Card.Footer className='card-footer'>
-                  <span className='mt-2'>{`${transformPrice(dish.price)}`}</span>
-                  <Button variant="warning" size="sm" onClick={() => addDishToCart(dish)} > Buy </Button>
+                  <div className="def-number-input number-input" key={idx}>
+                    <button onClick={() => decrease()} className="minus"></button>
+                    <input className="quantity" name="quantity" value={quantity} type="number" readOnly/>
+                    <button onClick={() => increase()} className="plus"></button>
+                  </div>
+                  <Button variant="warning" size="sm" onClick={() => addDishToCart(dish)} > Add </Button>
                 </Card.Footer>
               </Card>
             </div>
@@ -83,15 +101,15 @@ const Menu = ({ addDish }) => {
 }
 
 const mapStatetoProps = (state) => {
-	return {
+  return {
     cart: state.cart
-	};
+  };
 };
 
 const mapDispatchtoProps = (dispatch) => {
-	return {
+  return {
     addDish: (dishSelected) => addDishToCartAction(dispatch)(dishSelected)
-	};
+  };
 };
 
 export default connect(mapStatetoProps, mapDispatchtoProps)(Menu);

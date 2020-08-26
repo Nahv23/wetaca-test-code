@@ -3,5 +3,5 @@ import ShoppingReducer from './Reducers/Shopping';
 
 
 export default combineReducers({
-    cart: ShoppingReducer,
+    cartShopping: ShoppingReducer,
 });
