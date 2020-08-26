@@ -2,15 +2,28 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import { createStore } from 'redux';
+import { Provider } from "react-redux";
+import reducer from './Redux'
+import { loadState, saveState } from './LocalStore';
 import * as serviceWorker from './serviceWorker';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 
+const initialData = loadState();
+const store = createStore(reducer, initialData);
+
+store.subscribe(function() {
+	saveState(store.getState());
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    	<Provider store={store}>
+        <App />
+      </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

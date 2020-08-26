@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { addDishToCartAction } from '../Actions';
 
 import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+
 
 import './css/Menu.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -10,7 +13,7 @@ import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 
 
-const Menu = () => {
+const Menu = ({ addDish }) => {
 
   const [dataDishes, setDataDishes] = useState(null);
 
@@ -41,7 +44,10 @@ const Menu = () => {
     return result;
   }
 
-  console.log(dataDishes)
+  const addDishToCart = (dishSelected) => {
+    addDish(dishSelected.name, dishSelected)
+  }
+
   if (dataDishes === null) {
     return (
       <div className='main-content'>
@@ -63,7 +69,7 @@ const Menu = () => {
                 </Card.Body>
                 <Card.Footer className='card-footer'>
                   <span className='mt-2'>{`${transformPrice(dish.price)}`}</span>
-                  <Button variant="warning" size="sm" value={dish.name} onClick={() => alert(`${dish.name}`)} > Buy </Button>
+                  <Button variant="warning" size="sm" value={dish.name} onClick={() => addDishToCart(dish)} > Buy </Button>
                 </Card.Footer>
               </Card>
             </div>
@@ -75,4 +81,16 @@ const Menu = () => {
   }
 }
 
-export default Menu;
+const mapStatetoProps = (state) => {
+	return {
+    cart: state.cart
+	};
+};
+
+const mapDispatchtoProps = (dispatch) => {
+	return {
+    addDish: (dishName) => addDishToCartAction(dispatch)(dishName)
+	};
+};
+
+export default connect(mapStatetoProps, mapDispatchtoProps)(Menu);
