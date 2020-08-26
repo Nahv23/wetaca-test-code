@@ -45,7 +45,8 @@ const Menu = ({ addDish }) => {
   }
 
   const addDishToCart = (dishSelected) => {
-    addDish(dishSelected.name, dishSelected)
+    console.log("PLATO->", dishSelected)
+    addDish(dishSelected)
   }
 
   if (dataDishes === null) {
@@ -69,7 +70,7 @@ const Menu = ({ addDish }) => {
                 </Card.Body>
                 <Card.Footer className='card-footer'>
                   <span className='mt-2'>{`${transformPrice(dish.price)}`}</span>
-                  <Button variant="warning" size="sm" value={dish.name} onClick={() => addDishToCart(dish)} > Buy </Button>
+                  <Button variant="warning" size="sm" onClick={() => addDishToCart(dish)} > Buy </Button>
                 </Card.Footer>
               </Card>
             </div>
@@ -89,7 +90,7 @@ const mapStatetoProps = (state) => {
 
 const mapDispatchtoProps = (dispatch) => {
 	return {
-    addDish: (dishName) => addDishToCartAction(dispatch)(dishName)
+    addDish: (dishSelected) => addDishToCartAction(dispatch)(dishSelected)
 	};
 };
 
