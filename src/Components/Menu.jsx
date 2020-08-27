@@ -8,7 +8,7 @@ import Card from 'react-bootstrap/Card';
 
 import { transformPrice } from '../utils/PriceCalculator';
 
-import './css/menu.css';
+import './css/Menus.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
