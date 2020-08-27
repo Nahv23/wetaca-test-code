@@ -6,7 +6,9 @@ import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
-import './css/Menu.css';
+import { transformPrice } from '../utils/PriceCalculator';
+
+import './css/menu.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
@@ -37,12 +39,6 @@ const Menu = ({ addDish }) => {
       .then(res => setDataDishes(res.data.dishes))
       .catch(err => console.error(err));
   }, [setDataDishes]);
-
-  const transformPrice = (price) => {
-    let stringPrice = price.toString()
-    let result = stringPrice.slice(0, stringPrice.length - 2) + ',' + stringPrice.slice(stringPrice.length - 2).concat(' €')
-    return result;
-  }
 
   const decrease = () => {
     setQuantity(quantity - 1);
@@ -80,7 +76,7 @@ const Menu = ({ addDish }) => {
                 <Card.Img variant="top" src={dish.image} alt={dish.name} className='img-fluid' />
                 <Card.Body>
                   <Card.Title>{dish.name}</Card.Title>
-                  <h4 className='mt-2'>{`${transformPrice(dish.price)}`}</h4>
+                  <h5 className='mt-2 text-muted'>{`${transformPrice(dish.price)}`}</h5>
                 </Card.Body>
                 <Card.Footer className='card-footer'>
                   <div className="def-number-input number-input" key={idx}>
@@ -100,11 +96,7 @@ const Menu = ({ addDish }) => {
   }
 }
 
-const mapStatetoProps = (state) => {
-  return {
-    cart: state.cart
-  };
-};
+const mapStatetoProps = (state) => ({});
 
 const mapDispatchtoProps = (dispatch) => {
   return {
